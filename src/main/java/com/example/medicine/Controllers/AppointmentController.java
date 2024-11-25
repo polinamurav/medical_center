@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -74,12 +75,18 @@ public class AppointmentController {
         DoctorEntity doctor = service.getDoctor(); // Получение доктора, соответствующего выбранной услуге
         appointment.setDoctor(doctor); // Установка выбранного доктора в объект Appointment
 
+        // Проверка на занятость времени
+        LocalDateTime appointmentDate = appointment.getAppointmentDate();
+        List<Appointment> existingAppointments = appointmentService.getAppointmentsForDoctorAndDate(doctor, appointmentDate);
+        if (!existingAppointments.isEmpty()) {
+            model.addAttribute("error", "На выбранное время уже есть запись.");
+            return "user/online-appointment";
+        }
+
         appointment.setStatus(AppointmentStatus.EXPECTATION);
         appointmentService.saveAppointment(appointment);
         return "redirect:/medical-card"; //redirect - переход на другую страницу
     }
-
-
 
     @GetMapping("/getDoctorByService")
     @ResponseBody

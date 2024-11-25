@@ -49,5 +49,10 @@ public class AppointmentService {
         return appointmentRepo.getAppointmentTimeStatistics();
     }
 
+    public List<Appointment> getAppointmentsForDoctorAndDate(DoctorEntity doctor, LocalDateTime appointmentDate) {
+        LocalDateTime startOfDay = appointmentDate.withHour(0).withMinute(0).withSecond(0).withNano(0);
+        LocalDateTime endOfDay = appointmentDate.withHour(23).withMinute(59).withSecond(59).withNano(999999999);
+        return appointmentRepo.findByDoctorAndAppointmentDateBetween(doctor, startOfDay, endOfDay);
+    }
 
 }

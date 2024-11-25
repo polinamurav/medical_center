@@ -42,7 +42,12 @@
                     </select>
                 </div>
                 <div class="appointment-form-text">Дата:</div>
-                <input id="appointment-time" name="appointmentDate" type="datetime-local" class="appointment-form-input" th:field="*{appointmentDate}">
+                <div th:if="${error}" class="error-message">
+                    <p th:text="${error}"></p>
+                </div>
+                <input type="datetime-local" id="appointment-time" name="appointmentDate" class="appointment-form-input"
+                       step="3600" th:field="*{appointmentDate}"/>
+<!--                <input id="appointment-time" name="appointmentDate" type="datetime-local" class="appointment-form-input" th:field="*{appointmentDate}">-->
                 <div class="appointment-form-text">Комментарий:</div>
                 <textarea class="appointment-form-input" placeholder="Уточнения к записи" th:field="*{comment}"></textarea>
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">

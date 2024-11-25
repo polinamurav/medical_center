@@ -615,3 +615,9 @@ body {
 .close {
     display: none;
 }
+
+.error-message {
+    font-size: 20px;
+    color: red;
+    padding-bottom: 15px;
+}
